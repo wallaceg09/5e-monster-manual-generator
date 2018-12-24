@@ -1,4 +1,4 @@
-class Monster(
+data class Monster(
     val name: String = "Foobar",
     val size: String = "Medium",
     val type: String = "humanoid (any race)",
@@ -18,7 +18,8 @@ class Monster(
     val challenge: String = "1/4",
     val abilities: List<Action> = listOf(),
     val actions: List<Action> = listOf(),
-    val legendaryActions: List<LegendaryAction> = listOf()
+    val legendaryActionProlog: String = "",
+    val legendaryActions: List<Action> = listOf()
 ) {
     fun toLatex(): String {
         val latex = StringBuilder().apply {
@@ -44,22 +45,25 @@ class Monster(
             appendln("""languages={$languages},""")
             appendln("""challenge=$challenge""")
             appendln("""]""")
-            if(abilities.isNotEmpty()) {
+            if (abilities.isNotEmpty()) {
                 appendln("""\dndline""")
                 abilities.forEach {
                     appendln(it.toLatex())
                 }
             }
-            if(actions.isNotEmpty()) {
+            if (actions.isNotEmpty()) {
                 appendln("""\dndline""")
                 appendln("""\monstersection{Actions}""")
                 actions.forEach {
                     appendln(it.toLatex())
                 }
             }
-            if(legendaryActions.isNotEmpty()) {
+            if (legendaryActions.isNotEmpty()) {
                 appendln("""\dndline""")
                 appendln("""\monstersection{Legendary Actions}""")
+                if (legendaryActionProlog.isNotBlank()) {
+                    appendln(legendaryActionProlog)
+                }
                 legendaryActions.forEach {
                     appendln(it.toLatex())
                 }
