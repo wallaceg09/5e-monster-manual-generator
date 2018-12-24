@@ -16,12 +16,11 @@ class Monster(
     val senses: String = "passive Perception 10",
     val languages: String = "any one language (usually Common)",
     val challenge: String = "1/4",
-    val abilities: List<String> = listOf(), // TODO: new "Ability" class
-    val actions: List<String> = listOf(),
-    val legendaryActions: List<String> = listOf()
+    val abilities: List<Action> = listOf(),
+    val actions: List<Action> = listOf(),
+    val legendaryActions: List<LegendaryAction> = listOf()
 ) {
     fun toLatex(): String {
-        // TODO: I think a Stringbuilder would be cleaner here...
         val latex = StringBuilder().apply {
             appendln("""\begin{monsterboxnobg}{$name}""")
             appendln("""\begin{hangingpar}""")
@@ -48,27 +47,21 @@ class Monster(
             if(abilities.isNotEmpty()) {
                 appendln("""\dndline""")
                 abilities.forEach {
-                    appendln("""\begin{monsteraction}[TODO]""")
-                    appendln(it)
-                    appendln("""\end{monsteraction}""")
+                    appendln(it.toLatex())
                 }
             }
             if(actions.isNotEmpty()) {
                 appendln("""\dndline""")
                 appendln("""\monstersection{Actions}""")
                 actions.forEach {
-                    appendln("""\begin{monsteraction}[TODO]""")
-                    appendln(it)
-                    appendln("""\end{monsteraction}""")
+                    appendln(it.toLatex())
                 }
             }
             if(legendaryActions.isNotEmpty()) {
                 appendln("""\dndline""")
                 appendln("""\monstersection{Legendary Actions}""")
-                actions.forEach {
-                    appendln("""\begin{monsteraction}[TODO]""")
-                    appendln(it)
-                    appendln("""\end{monsteraction}""")
+                legendaryActions.forEach {
+                    appendln(it.toLatex())
                 }
             }
             appendln("""\end{monsterboxnobg}""")
